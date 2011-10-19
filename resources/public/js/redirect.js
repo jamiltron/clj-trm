@@ -1,5 +1,5 @@
 function trm_redirect(trm) {
-    if (!(trm.substr(0,4) == "http") || !(trm.substr(0,3) == "ftp")) {
+    if (!(trm.substr(0,4) == "http")) {
         trm = "http://" + trm;
     }
     window.location = trm;

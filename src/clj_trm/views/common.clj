@@ -21,17 +21,18 @@
      content]]))
 
 (defpartial shorten-fields []
-  (text-field {:placeholder "Address" :type "textbox"} :address))
+  (form-to [:post "/trm"]
+           (text-field {:placeholder "Address" :type "textbox"} :address)
+           (submit-button {:class "submit"} "trm")))
 
 (defpage "/" []
   (main-layout
-   (form-to [:post "/trm"]
-            (shorten-fields)
-            (submit-button {:class "submit"} "trm"))))
+            (shorten-fields)))
 
 (defpage "/trm" {:keys [address base62]}
   (main-layout (when (and address base62)
-                 [:p address " has been trm'd to http://gentle-journey-8171.herokuapp.com/" base62])))
+                 [:p address " has been trm'd to " [:b "http://gentle-journey-8171.herokuapp.com/" base62]])
+               (shorten-fields)))
 
 (defpage [:post "/trm"] {address :address}
   (if
