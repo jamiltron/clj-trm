@@ -43,7 +43,7 @@
 
 (defpage "/trm" {:keys [address base62]}
   (main-layout (when (and address base62)
-                 [:p address " has been trm'd to " base62])))
+                 [:p address " has been trm'd to http://gentle-journey-8171.herokuapp.com/" base62])))
 
 (defpage [:post "/trm"] {address :address}
   (if
