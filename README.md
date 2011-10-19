@@ -1,6 +1,6 @@
 # clj-trm
 
-A url-shortener written in Noir. There is a bit more work to do.
+A url-shortener written in Noir. View the current application at http://gentle-journey-8171.herokuapp.com/
 
 ## Usage
 
