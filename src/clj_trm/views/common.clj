@@ -31,7 +31,7 @@
 
 (defpage "/trm" {:keys [address base62]}
   (main-layout (when (and address base62)
-                 [:p address " has been trm'd to " [:b "http://gentle-journey-8171.herokuapp.com/" base62]])
+                 [:p address " has been trm'd to " [:b "http://clj-trm.herokuapp.com/" base62]])
                (shorten-fields)))
 
 (defpage [:post "/trm"] {address :address}
@@ -47,9 +47,8 @@
       
 
 (defpage "/:trm" {:keys [trm]}
-  (let [address (links/base62->address trm)]
-    (if (nil? address)
-      (do (session/flash-put! "Sorry, it doesn't look like that was a valid trm.")
-          (resp/redirect "/"))
-      (main-layout [:p "Redirecting you to " [:i address] " provided by clj-trm."
-                    [:script {:type "text/javascript"} "trm_delay(\"" address "\");"]]))))
+  (if-let [address (links/base62->address trm)]
+    (main-layout [:p "Redirecting you to " [:i address] " provided by clj-trm."
+                  [:script {:type "text/javascript"} "trm_delay(\"" address "\");"]])
+    (do (session/flash-put! "Sorry, it doesn't look like that was a valid trm.")
+        (resp/redirect "/"))))

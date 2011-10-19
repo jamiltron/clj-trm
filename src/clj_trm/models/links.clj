@@ -15,15 +15,16 @@
 (defn valid-html? [address]
   (some #(= address %) (re-find html-re address)))
 
-(defn base10->base62 [x]
+(defn base10->base62
+  "Given a decimal number, converts to the corresponding base62 string."
+  [x]
   (letfn [(base-conv [curr q]
             (if (>= 0 q) (apply str curr)
                 (recur (conj curr (nth base62-alphabet (rem q 62))) (quot q 62))))]
     (base-conv '() x)))
 
 (defn single-select
-  "Given a 'select' item and a 'where' item with the corresponding where value, return
-  the 'select' value from the database, nil otherwise."
+  "Given a 'select' item and a 'where' item with the corresponding where value, return  the 'select' value from the database, nil otherwise."
   [select-item where-item where-value]
   (let  [query (str "SELECT " select-item " FROM links WHERE " where-item "=?")]
   (sql/with-connection db
@@ -40,7 +41,9 @@
 (defn address->id [address]
   (single-select "id" "address" address))
 
-(defn add! [address]
+(defn add!
+  "Add an address to the database."
+  [address]
   (sql/with-connection db
     (sql/insert-values :links [:address] [address])
     (sql/with-query-results results
