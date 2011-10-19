@@ -11,7 +11,21 @@
   (html5
    [:head
     [:title "clj-trm"]
-    (include-css "/css/reset.css")]
+    (include-css "/css/reset.css")
+    (include-css "/css/style.css")]
+   [:body
+    [:h1 "CLJ-TRM: the url shortener written in Clojure + Noir"]
+    [:div#flash (session/flash-get)]
+    [:div#wrapper
+     content]]))
+
+(defpartial redirect-layout [& content]
+  (html5
+   [:head
+    [:title "clj-trm"]
+    (include-css "/css/reset.css")
+    (include-css "/css/style.css")
+    (include-js "/js/redirect.js")]
    [:body
     [:h1 "CLJ-TRM: the url shortener written in Clojure + Noir"]
     [:div#flash (session/flash-get)]
@@ -19,7 +33,7 @@
      content]]))
 
 (defpartial shorten-fields []
-  (text-field {:placeholder "Address"} :address))
+  (text-field {:placeholder "Address" :type "textbox"} :address))
 
 (defpage "/" []
   (main-layout
@@ -48,4 +62,5 @@
     (if (nil? address)
       (do (session/flash-put! "Sorry, it doesn't look like that was a valid trm.")
           (resp/redirect "/"))
-      (resp/redirect address))))
+      (redirect-layout [:p "Redirecting you to " [:i address] " provided by clj-trm."
+                         [:script {:type "text/javascript"} "trm_delay(\"" address "\");"]]))))
